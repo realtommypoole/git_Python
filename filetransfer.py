@@ -40,18 +40,19 @@ def load_gui(self):
 def f_src(self):
     src = tk.filedialog.askdirectory()
     print(str(src))
-    self.browse_src.insert(END, str(src))
+    self.browse_src.insert(END, str(src) + "/")
 
 def f_dst(self):
     dst = tk.filedialog.askdirectory()
     print(str(dst))
-    self.browse_dst.insert(END, str(dst))
+    self.browse_dst.insert(END, str(dst) + "/")
         
 
 def f_move(self): 
     #establish a sense of time for the opartion
-    now = dt.datetime.now()
-    day = now-dt.timedelta(hours=24)
+##    now = dt.datetime.now()
+##    day = now-dt.timedelta(hours=24)
+    
 
     # set where the sources of the files are
     source = self.browse_src.get()
@@ -66,12 +67,12 @@ def f_move(self):
     #iterate through the source files, add full path name, get modified time, compare that time to now, move if less than 24 hrs
     for i in files:
         path = os.path.join(source,i)
+        print(path)
         mtime = os.path.getmtime(path)
-        mtime.strptime('%Y-%m-%d %H:%M:%S')
-        print (time)
-        print(day)
-##        if mtime > day:
-##            shutil.move(source+i, destination)
+        age = time.time()- mtime
+        if age < 86400:
+            shutil.move(source+i, destination)
+            print('Files have moved!')
 
         
 if __name__ == "__main__":
